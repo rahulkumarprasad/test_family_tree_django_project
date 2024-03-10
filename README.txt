@@ -32,6 +32,15 @@
 
 ######################## Runnning Instruction ########################
 
+Install Package:
+    1) please delete .venv folder if its present in folder
+    2) create new python virtualenvironment using below code
+        >> virtualenv .venv
+        or
+        >> python -m venv .venv
+    3) install required packages using elow code
+        >> pip install -r requirements.txt
+
 Note:
     using default database sqlite3, so if wanted fresh data then delete file named db.sqlite3 and then run below code to setup new database.
     >> python manage.py migrate

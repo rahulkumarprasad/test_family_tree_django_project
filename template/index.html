@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+  <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"
+    integrity="sha384-IQsoLXl5PILFhosVNubq5LC7Qb9DXgDA9i+tQ8Zj3iwWAwPtgFTxbJ8NT4GN1R8p"
+    crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js"
+    integrity="sha384-cVKIPhGWiC2Al4u+LWgxfKTRIcfu0JTxR+EQDz/bgldoEyl4H0zUF0QKbrJ0EcQF"
+    crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+    crossorigin="anonymous"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+
+  <title>Person</title>
+</head>
+
+<body>
+  <div class="container-fluid">
+    <!-- Create person form -->
+    <div class="col-md-12 row border border-dark p-5 m-0 my-5">
+      <div class="col-md-12">
+        <h5 class="text-center">Create Person</h5>
+      </div>
+      <div class="col-md-12" id="create_person_message">
+      </div>
+      <form id="cerate_person" action="/create-person" method="post">
+        {%csrf_token%}
+        <div class="col-md-12">
+          <label for="nme">Name: </label>
+          <input class="form-control" type="text" name="name" id="name">
+        </div>
+        <div class="col-md-12">
+          <label for="gender">
+            Gender:
+          </label>
+          <select class="form-control" name="gender" id="gender">
+            <option value="male" selected>Male</option>
+            <option value="femail">Femail</option>
+          </select>
+        </div>
+        <div class="col-md-12 my-3">
+          <button class="btn btn-success" type="submit">
+            Submit
+          </button>
+        </div>
+      </form>
+    </div>
+    
+    <!-- Add relationship form -->
+    <div class="col-md-12 row border border-dark p-5 m-0 my-5">
+      <div class="col-md-12">
+        <h5 class="text-center">Add Relationship for a Person</h5>
+      </div>
+      <div class="col-md-12" id="relationship_person_message">
+      </div>
+      <form id="add_relationship" action="/add-relation" method="post">
+        {%csrf_token%}
+
+        <div class="col-md-4 input-group my-2">
+          <label for="person_1_id" class="mx-1">He/She: </label>
+          <select class="form-control col-md-3" name="person_1_id" id="person_1_id">
+            <option value="" selected>Please select</option>
+            {%for person in all_person%}
+              <option value="{{person.id}}">{{person.name}}</option>
+            {%endfor%}
+          </select>
+        </div>
+
+        <div class="col-md-2 input-group my-2">
+          <label for="r_type" class="mx-1">Is: </label>
+          <select class="form-control col-md-3" name="r_type" id="r_type">
+            <option value="father" selected>Father</option>
+            <option value="mother">Mother</option>
+            <option value="wife">Wife</option>
+          </select>
+        </div>
+        <div class="col-md-4 col-12 input-group my-2">
+          <label for="person_2_id" class="mx-1">Of: </label>
+          <select class="form-control col-md-3" name="person_2_id" id="person_2_id">
+            <option value="" selected>Please select</option>
+            {%for person in all_person%}
+              <option value="{{person.id}}">{{person.name}}</option>
+            {%endfor%}
+          </select>
+        </div>
+
+        <div class="col-md-12 my-3">
+          <button class="btn btn-success" type="submit">
+            Submit
+          </button>
+        </div>
+      </form>
+    </div>
+
+
+    <!-- Get Count -->
+    <div class="col-md-12 row border border-dark p-5 m-0 my-5">
+      <div class="col-md-12">
+        <h5 class="text-center">Get Count Of Total Sons Or Daughters Or Wives</h5>
+      </div>
+      <div class="col-md-12" id="get_count_message">
+      </div>
+      <form id="get_count" action="get-count" method="get">
+
+        <div class="col-md-12 my-2">
+          <label for="person_1_id" class="mx-1">Select Query Type: </label>
+        </div>
+        <div class="col-md-12 row">
+          <div class="col-md-3">
+            <label >Total Sons</label>
+            <input class="radio" value="sons" type="radio" name="count_of"/>
+          </div>
+          <div class="col-md-3">
+            <label >Total Daughters</label>
+            <input class="radio" value="daughters" type="radio" name="count_of"/>
+          </div>
+          <div class="col-md-3">
+            <label >Total Wives</label>
+            <input class="radio" value="wives" type="radio" name="count_of"/>
+          </div>
+        </div>
+        <div class="col-md-4 col-12 input-group my-2">
+          <label for="parent_id" class="mx-1">Of: </label>
+          <select class="form-control col-md-3" name="parent_id" id="parent_id">
+            <option value="" selected>Please select</option>
+            {%for person in all_person%}
+              <option value="{{person.id}}">{{person.name}}</option>
+            {%endfor%}
+          </select>
+        </div>
+        <div class="col-md-12 pt-2">
+          <label for="result">Count := </label>
+          <input type="text" id="count_result_output" value="0" disabled>
+        </div>
+
+        <div class="col-md-12 my-3">
+          <button class="btn btn-success" type="submit">
+            Submit
+          </button>
+        </div>
+      </form>
+    </div>
+  
+    <!-- Get Father Name -->
+    <div class="col-md-12 row border border-dark p-5 m-0 my-5">
+      <div class="col-md-12">
+        <h5 class="text-center">Get Father Name of a Person</h5>
+      </div>
+      <div class="col-md-12" id="get_father_message">
+      </div>
+      <form id="get_father_name" action="get-father-name" method="get">
+
+        <div class="col-md-4 col-12 input-group my-2">
+          <label for="son_id" class="mx-1">Father Of: </label>
+          <select class="form-control col-md-3" name="son_id" id="son_id">
+            <option value="" selected>Please select</option>
+            {%for person in all_person%}
+              <option value="{{person.id}}">{{person.name}}</option>
+            {%endfor%}
+          </select>
+        </div>
+        <div class="col-md-12 pt-2">
+          <label for="result">Father Name := </label>
+          <input type="text" id="father_name_out" value="" disabled>
+        </div>
+
+        <div class="col-md-12 my-3">
+          <button class="btn btn-success" type="submit">
+            Submit
+          </button>
+        </div>
+      </form>
+    </div>
+
+  </div>
+
+  <script>
+
+    <!-- Ajax call for creating person -->
+
+    $("#cerate_person").on("submit", function (e) {
+      e.preventDefault();
+      $.ajax({
+        url: $(this).attr("action"),
+        method: $(this).attr("method"),
+        data: $(this).serialize(),
+        success: (res) => {
+          let elem = document.createElement("p");
+          elem.className = "text-success";
+          elem.innerHTML = res;
+          document.getElementById("create_person_message").appendChild(elem);
+          document.getElementById("cerate_person").reset();
+          setTimeout(() => {
+            elem.remove();
+            window.location.reload();
+          }, 500);
+        },
+        error: (res) => {
+          if (res.status == 400) {
+            let ele = document.createElement("p");
+            ele.className = "text-danger"
+            ele.innerHTML = res.responseText;
+            document.getElementById("create_person_message").appendChild(ele);
+            setTimeout(() => {
+              ele.remove();
+            }, 1000);
+          }
+          else {
+            alert(res.responseText);
+          }
+        },
+      });
+
+    });
+
+
+  </script>
+
+  <script>
+
+      <!-- Ajax call for adding relation -->
+  
+      $("#add_relationship").on("submit", function (e) {
+        e.preventDefault();
+        $.ajax({
+          url: $(this).attr("action"),
+          method: $(this).attr("method"),
+          data: $(this).serialize(),
+          success: (res) => {
+            let elem = document.createElement("p");
+            elem.className = "text-success";
+            elem.innerHTML = res;
+            document.getElementById("relationship_person_message").appendChild(elem);
+            document.getElementById("add_relationship").reset();
+            setTimeout(() => {
+              elem.remove();
+            }, 500);
+          },
+          error: (res) => {
+            if (res.status == 400) {
+              let ele = document.createElement("p");
+              ele.className = "text-danger"
+              ele.innerHTML = res.responseText;
+              document.getElementById("relationship_person_message").appendChild(ele);
+              setTimeout(() => {
+                ele.remove();
+              }, 500);
+            }
+            else {
+              alert(res.responseText);
+            }
+          },
+        });
+  
+      });
+  
+  
+  </script>
+  
+  <script>
+    <!-- Get Count Ajax Call -->
+    $("#get_count").on("submit", function (e) {
+      e.preventDefault();
+      $.ajax({
+        url: $(this).attr("action"),
+        method: $(this).attr("method"),
+        data: $(this).serialize(),
+        success: (res) => {
+          $("#count_result_output").val(res["count"]);
+        },
+        error: (res) => {
+          if (res.status == 400) {
+            alert(res.responseText);
+          }
+          else {
+            alert(res.responseText);
+          }
+        },
+      });
+
+    });
+</script>
+
+<script>
+  <!-- Get Count Ajax Call -->
+  $("#get_father_name").on("submit", function (e) {
+    e.preventDefault();
+    $.ajax({
+      url: $(this).attr("action"),
+      method: $(this).attr("method"),
+      data: $(this).serialize(),
+      success: (res) => {
+        $("#father_name_out").val(res["father_name"]);
+      },
+      error: (res) => {
+        if (res.status == 400) {
+          alert(res.responseText);
+        }
+        else {
+          alert(res.responseText);
+        }
+      },
+    });
+
+  });
+
+</script>
+
+</body>
+
+</html>
